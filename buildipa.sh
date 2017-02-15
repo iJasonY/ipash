@@ -14,14 +14,24 @@ ipapath=$archiveDir/$fileNameStr.ipa #ipa文件路径
 # 清理工程
 xcodebuild clean -workspace $projectName.xcworkspace -scheme $projectName -configuration Release && \
 
-echo "+++++++++++++++++ clean success+++++++++++++++++"
+# echo "+++++++++++++++++ clean success+++++++++++++++++"
 
 # archive
 xcodebuild archive -workspace $projectName.xcworkspace -scheme $projectName -archivePath $xcarchivePath && \
 
-echo "+++++++++++++++++ archive success in $archiveDir +++++++++++++++++"
+# echo "+++++++++++++++++ archive success in $archiveDir +++++++++++++++++"
 
 # ipa
 xcodebuild -exportArchive -archivePath $xcarchivePath -exportPath $ipapath -exportFormat ipa -exportProvisioningProfile "iOS Team Provisioning Profile: *" -verbose
 
-echo "+++++++++++++++++ export ipa success in $archiveDir +++++++++++++++++"
+# echo "+++++++++++++++++ export ipa success in $archiveDir +++++++++++++++++"
+
+# 判断编译结果
+if test $? -eq 0
+then
+echo "~~~~~~~~~~~~~~~~~~~编译成功~~~~~~~~~~~~~~~~~~~"
+open $archiveDir
+else
+echo "~~~~~~~~~~~~~~~~~~~编译失败~~~~~~~~~~~~~~~~~~~"
+exit 1
+fi
